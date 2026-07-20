@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maya — Your AI Receptionist, by Nexora</title>
+<meta name="description" content="Maya answers every call, books every appointment, and never has a bad day. Built by Nexora for UK small businesses.">
+<style>
+  :root{
+    --bg:#06060d;
+    --panel:#0d0d1a;
+    --border:#211f38;
+    --border-soft:#1a1830;
+    --text:#f3f3fb;
+    --muted:#9c9ab8;
+    --muted2:#6b6985;
+    --blue:#5b7fff;
+    --purple:#9b5cf6;
+    --pink:#e34fe0;
+    --green:#34d399;
+    --grad: linear-gradient(135deg,#5b7fff,#9b5cf6 55%,#e34fe0);
+    --grad-soft: linear-gradient(135deg, rgba(91,127,255,.12), rgba(155,92,246,.12) 55%, rgba(227,79,224,.12));
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(circle at 12% -5%, #1a1440 0%, transparent 40%),
+      radial-gradient(circle at 92% 8%, #16183f 0%, transparent 38%),
+      radial-gradient(circle at 50% 100%, #140f2e 0%, transparent 45%),
+      var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+  .wrap{max-width:720px;margin:0 auto;padding:0 22px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(6,6,13,.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-.01em;}
+  .brand img{width:30px;height:30px;border-radius:8px;}
+  .nav-cta{
+    background:var(--grad);color:#fff;border:none;padding:9px 18px;border-radius:100px;
+    font-size:13px;font-weight:700;text-decoration:none;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:64px 0 40px;text-align:center;}
+  .eyebrow{
+    display:inline-block;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted2);border:1px solid var(--border);padding:6px 14px;border-radius:100px;margin-bottom:26px;
+  }
+  h1{
+    font-size:clamp(30px,7vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:18px;
+  }
+  h1 .accent{
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto 40px;}
+
+  /* ---------- SIGNATURE: WAVEFORM PLAYER ---------- */
+  .player-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:24px;
+    padding:28px 24px;max-width:440px;margin:0 auto;text-align:left;
+    box-shadow:0 30px 80px -40px rgba(155,92,246,.5);
+  }
+  .player-top{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .play-btn{
+    width:52px;height:52px;border-radius:50%;background:var(--grad);border:none;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;
+    box-shadow:0 8px 24px -6px rgba(155,92,246,.6);
+  }
+  .play-btn svg{width:20px;height:20px;}
+  .player-label{font-size:13px;font-weight:700;}
+  .player-label .sub{font-size:12px;color:var(--muted2);font-weight:500;margin-top:1px;}
+  .waveform{
+    height:56px;display:flex;align-items:center;gap:3px;
+  }
+  .waveform span{
+    flex:1;background:var(--border-soft);border-radius:3px;min-width:2px;
+    transition:background .2s;
+  }
+  .waveform.playing span{ background:linear-gradient(180deg,var(--blue),var(--purple)); animation: bounce 1s ease-in-out infinite; }
+  @keyframes bounce{ 0%,100%{ transform: scaleY(.4);} 50%{ transform: scaleY(1);} }
+  audio{display:none;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:56px 0;}
+  .section-label{
+    font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);
+    margin-bottom:12px;
+  }
+  h2{font-size:clamp(22px,5vw,30px);font-weight:800;letter-spacing:-.02em;margin-bottom:14px;}
+  .lede{color:var(--muted);font-size:15px;max-width:520px;margin-bottom:32px;}
+
+  /* ---------- PROOF (second recording) ---------- */
+  .proof-card{
+    background:var(--grad-soft);border:1px solid var(--border);border-radius:20px;padding:26px;
+  }
+  .proof-card .player-top{margin-bottom:16px;}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{display:flex;flex-direction:column;gap:0;}
+  .step{
+    display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--border-soft);
+  }
+  .step:last-child{border-bottom:none;}
+  .step-num{
+    font-size:13px;font-weight:800;color:var(--purple);width:24px;flex-shrink:0;padding-top:2px;
+  }
+  .step-text b{display:block;font-size:15px;margin-bottom:3px;}
+  .step-text span{font-size:13px;color:var(--muted);}
+
+  /* ---------- PRICING ---------- */
+  .price-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:30px 26px;
+    text-align:center;
+  }
+  .price-amount{font-size:44px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px;}
+  .price-amount span{font-size:16px;color:var(--muted2);font-weight:600;}
+  .price-breakdown{font-size:13px;color:var(--muted);margin-bottom:24px;}
+  .price-list{list-style:none;text-align:left;max-width:280px;margin:0 auto 26px;}
+  .price-list li{font-size:14px;color:var(--muted);padding:7px 0;display:flex;gap:9px;}
+  .price-list li:before{content:"✓";color:var(--green);font-weight:800;}
+  .cta-btn{
+    display:block;width:100%;background:var(--grad);color:#fff;border:none;padding:16px;border-radius:100px;
+    font-size:15px;font-weight:700;text-decoration:none;text-align:center;
+    box-shadow:0 10px 30px -8px rgba(155,92,246,.6);
+  }
+  .refund-note{font-size:12px;color:var(--muted2);margin-top:14px;}
+
+  /* ---------- FOOTER / CONTACT ---------- */
+  footer{padding:50px 0 40px;text-align:center;border-top:1px solid var(--border-soft);margin-top:20px;}
+  footer .brand{justify-content:center;margin-bottom:18px;}
+  .contact-links{display:flex;flex-direction:column;gap:10px;align-items:center;margin-bottom:20px;}
+  .contact-links a{
+    font-size:14px;color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;
+  }
+  .contact-links a:hover{border-bottom-color:var(--muted);}
+  footer .fine{font-size:12px;color:var(--muted2);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><img src="nexora-logo.png" alt="Nexora"> Nexora</div>
+    <a href="#pricing" class="nav-cta">Get Maya</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">AI Receptionist for UK Small Businesses</div>
+    <h1>Every call answered.<br>Every time. <span class="accent">Even at 2am.</span></h1>
+    <p class="hero-sub">Meet Maya — she answers your phone, books your appointments, and never has a bad day. Press play and hear her introduce herself.</p>
+
+    <div class="player-card">
+      <div class="player-top">
+        <button class="play-btn" id="playBtn1" onclick="toggleAudio('audio1','playBtn1','wave1')">
+          <svg id="icon1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="player-label">Meet Maya<div class="sub">30 sec · her own words</div></div>
+      </div>
+      <div class="waveform" id="wave1">
+        <!-- bars generated by JS -->
+      </div>
+      <audio id="audio1" src="maya-intro.mp3"></audio>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <div class="section-label">Not a demo. A real call.</div>
+    <h2>Hear her handle an actual booking.</h2>
+    <p class="lede">No script, no editing — this is Maya taking a real appointment for a dental practice. Same AI, same intelligence — for your business, she'd be trained on your services, hours, and pricing instead.</p>
+
+    <div class="proof-card">
+      <div class="player-top">
+        <button class="play-btn" id="playBtn2" onclick="toggleAudio('audio2','playBtn2','wave2')">
+          <svg id="icon2" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="player-label">Live call recording<div class="sub">Maya books an appointment</div></div>
+      </div>
+      <div class="waveform" id="wave2"></div>
+      <audio id="audio2" src="maya-realcall.mp3"></audio>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-label">How it works</div>
+    <h2>Set up once. She takes it from there.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-text"><b>Forward your business number</b><span>Your existing number stays the same — calls just quietly redirect to Maya.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-text"><b>Maya learns your business</b><span>Hours, services, pricing, and how you like calls handled — built into her from day one.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-text"><b>She answers, books, and follows up</b><span>Every call handled, every booking confirmed, every detail sent straight to you.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-label">Pricing</div>
+    <h2>Simple, honest pricing.</h2>
+    <div class="price-card">
+      <div class="price-breakdown">£99 setup + £100 first month</div>
+      <div class="price-amount">£199 <span>to get started</span></div>
+      <ul class="price-list">
+        <li>Your own dedicated number for Maya</li>
+        <li>Fully set up within the hour</li>
+        <li>Answers calls 24/7, never misses one</li>
+        <li>Books appointments straight into your day</li>
+      </ul>
+      <a href="mailto:nexora22444@gmail.com?subject=I want Maya for my business" class="cta-btn">Get Maya for my business</a>
+      <p class="refund-note">Not happy in the first 7 days? Your £100 comes back. No questions.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><img src="nexora-logo.png" alt="Nexora"> Nexora</div>
+    <div class="contact-links">
+      <a href="mailto:nexora22444@gmail.com">nexora22444@gmail.com</a>
+      <a href="tel:REPLACE_WITH_TEST_NUMBER">📞 Try Maya yourself — call REPLACE_WITH_TEST_NUMBER</a>
+    </div>
+    <p class="fine">© 2026 Nexora. Maya is built and operated by Nexora.</p>
+  </div>
+</footer>
+
+<script>
+// Build waveform bars for both players
+function buildWave(id, count){
+  const el = document.getElementById(id);
+  for(let i=0;i<count;i++){
+    const bar = document.createElement('span');
+    const h = 8 + Math.random()*40;
+    bar.style.height = h + 'px';
+    bar.style.animationDelay = (Math.random()*0.6) + 's';
+    el.appendChild(bar);
+  }
+}
+buildWave('wave1', 40);
+buildWave('wave2', 40);
+
+let currentlyPlaying = null;
+
+function toggleAudio(audioId, btnId, waveId){
+  const audio = document.getElementById(audioId);
+  const icon = document.getElementById(btnId === 'playBtn1' ? 'icon1' : 'icon2');
+  const wave = document.getElementById(waveId);
+
+  // stop any other playing audio first
+  if(currentlyPlaying && currentlyPlaying.audio !== audio){
+    currentlyPlaying.audio.pause();
+    currentlyPlaying.audio.currentTime = 0;
+    currentlyPlaying.wave.classList.remove('playing');
+    currentlyPlaying.icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+  }
+
+  if(audio.paused){
+    audio.play();
+    wave.classList.add('playing');
+    icon.innerHTML = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+    currentlyPlaying = {audio, wave, icon};
+  }else{
+    audio.pause();
+    wave.classList.remove('playing');
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    currentlyPlaying = null;
+  }
+}
+
+// reset button when audio finishes naturally
+['audio1','audio2'].forEach((id, idx)=>{
+  document.getElementById(id).addEventListener('ended', ()=>{
+    const wave = document.getElementById(idx === 0 ? 'wave1' : 'wave2');
+    const icon = document.getElementById(idx === 0 ? 'icon1' : 'icon2');
+    wave.classList.remove('playing');
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    currentlyPlaying = null;
+  });
+});
+</script>
+
+</body>
+</html>
